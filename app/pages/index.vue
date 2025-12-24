@@ -2,35 +2,22 @@
   <input
     type="text"
     v-model="idOrName"
-    placeholder="ID or Name" />
-  <button @click="fetchPokemon">Fetch Pokemon</button>
+    placeholder="ID or Name"
+  />
+  <button @click="() => fetchPokemon()">Fetch Pokemon</button>
 
-  <div v-if="pokemon">
-    <h2>pokemon.name: {{ pokemon.name }}</h2>
-    <img class="pokemon-img" :src="pokemon.sprites.front_default" />
+  <div v-if="pokemonPending">Loading...</div>
+
+  <div v-if="pokemonError">Error: {{ pokemonError }}</div>
+
+  <div v-if="pokemonData">
+    <h2>{{ pokemonData.name }}</h2>
+    <img class="pokemon-img" :src="pokemonData.sprites.front_default" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PokemonDetail } from '~/types/pokeapi';
-
-const idOrName = ref<string>("");
-const pokemon = ref<PokemonDetail | null>(null);
-
-const fetchPokemon = async () => {
-  if (!idOrName.value) {
-    alert("Please enter an ID or Name");
-    return;
-  }
-
-  try {
-    const res = await $fetch<PokemonDetail>(`https://pokeapi.co/api/v2/pokemon/${idOrName.value}`);
-    pokemon.value = res;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    alert("Failed to fetch Pokemon");
-  }
-};
+const { idOrName, pokemonData, pokemonPending, pokemonError, fetchPokemon } = usePokemon();
 </script>
 
 <style scoped>
