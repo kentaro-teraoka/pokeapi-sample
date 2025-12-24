@@ -7,11 +7,15 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "api-client": "openapi-typescript ./schemas/pokeapi.yaml -o ./app/types/pokeapi.d.ts --root-types=true --root-types-no-schema-prefix=true"
   },
   "dependencies": {
     "nuxt": "^4.2.2",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.10.1"
   }
 }
