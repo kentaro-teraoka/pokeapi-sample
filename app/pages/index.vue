@@ -1,19 +1,26 @@
 <template>
-  <input
-    type="text"
-    v-model="idOrName"
-    placeholder="ID or Name"
-  />
-  <button @click="() => fetchPokemon()">Fetch Pokemon</button>
+  <div class="space-y-6">
+    <UForm @submit="() => fetchPokemon()" class="space-y-4">
+      <UFormField label="ID or Name" name="idOrName">
+        <UInput
+          v-model="idOrName"
+          type="search"
+          placeholder="ID or Name" />
+      </UFormField>
+  
+      <UButton type="submit">Fetch Pokemon</UButton>
+    </UForm>
 
-  <div v-if="pokemonPending">Loading...</div>
-
-  <div v-if="pokemonError">Error: {{ pokemonError }}</div>
-
-  <div v-if="pokemonData">
-    <h2>{{ pokemonData.name }}</h2>
-    <img class="pokemon-img" :src="pokemonData.sprites.front_default" />
+    <div v-if="pokemonPending">Loading...</div>
+  
+    <div v-if="pokemonError">Error: {{ pokemonError }}</div>
+  
+    <div v-if="pokemonData">
+      <h2>{{ pokemonData.name }}</h2>
+      <img class="pokemon-img" :src="pokemonData.sprites.front_default" />
+    </div>
   </div>
+
 </template>
 
 <script setup lang="ts">

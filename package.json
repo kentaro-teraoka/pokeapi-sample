@@ -11,6 +11,7 @@
     "api-client": "openapi-typescript ./schemas/pokeapi.yaml -o ./app/types/pokeapi.d.ts --root-types=true --root-types-no-schema-prefix=true"
   },
   "dependencies": {
+    "@nuxt/ui": "^4.3.0",
     "nuxt": "^4.2.2",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
