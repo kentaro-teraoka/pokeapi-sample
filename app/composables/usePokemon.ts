@@ -9,19 +9,21 @@ export const usePokemon = () => {
     error,
     execute,
   } = useAsyncData<PokemonDetail>(
-    "pokemon-fetch",
+    () => `pokemon-fetch-${idOrName.value}`,
     async () => {
       if (!idOrName.value) {
         throw new Error("ID or Name is required");
       }
 
+      // 1000 ~ 3000msの遅延
+      const delay = Math.floor(Math.random() * 2000) + 1000
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
       return await $fetch<PokemonDetail>(
         `https://pokeapi.co/api/v2/pokemon/${idOrName.value}`
       );
     },
-    {
-      immediate: false, // 初回は自動実行しない
-    }
+    { immediate: false }
   );
 
   return {
