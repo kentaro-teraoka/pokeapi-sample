@@ -11,10 +11,6 @@ export const usePokemon = () => {
   } = useAsyncData<PokemonDetail>(
     () => `pokemon-fetch-${idOrName.value}`,
     async () => {
-      if (!idOrName.value) {
-        throw new Error("ID or Name is required");
-      }
-
       // 1000 ~ 3000msの遅延
       const delay = Math.floor(Math.random() * 2000) + 1000
       await new Promise((resolve) => setTimeout(resolve, delay));
