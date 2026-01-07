@@ -1,10 +1,12 @@
 <template>
   <UApp>
-    <SearchHeader />
-    <slot />
+    <Header />
+    <UContainer>
+      <slot />
+    </UContainer>
   </UApp>
 </template>
 
 <script setup lang="ts">
-import SearchHeader from '~/components/SearchHeader.vue';
+import Header from '~/components/Header.vue';
 </script>
