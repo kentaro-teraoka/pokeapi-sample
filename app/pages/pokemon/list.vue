@@ -1,17 +1,22 @@
 <template>
-  <div v-if="pokemonListPending">Loading...</div>
-  <div v-else-if="pokemonListError">Error: {{ pokemonListError }}</div>
+  <div v-if="pokemonListWithDetailPending">Loading...</div>
+  <div v-else-if="pokemonListWithDetailError">Error: {{ pokemonListWithDetailError }}</div>
   <div v-else>
     <ul>
-      <li v-for="pokemon in pokemonListData?.results" :key="pokemon.name">
-        <NuxtLink :to="`/pokemon/${pokemon.name}`">
-          {{ pokemon.name }}
+      <li v-for="pokemonDetail in pokemonListDataWithDetail" :key="pokemonDetail.name">
+        <NuxtLink :to="`/pokemon/${pokemonDetail.name}`">
+          <img v-if="pokemonDetail?.sprites.front_default" :src="pokemonDetail.sprites.front_default" />
+          No.{{ pokemonDetail.id }}
+          {{ pokemonDetail.name }}
+          <span v-for="t in pokemonDetail?.types" :key="t.slot" class="px-1 bg-neutral-300 text-black">
+            {{ t.type.name }}
+          </span>
         </NuxtLink>
       </li>
     </ul>
   </div>
 
-  <div v-if="pokemonListData?.count">
+  <div v-if="pokemonListDataWithDetail?.length">
     <UPagination
       v-model:page="pageNum"
       :items-per-page="itemsPerPage"
@@ -23,7 +28,9 @@
 const route = useRoute();
 const router = useRouter();
 
-const { offset, limit, pokemonListData, pokemonListPending, pokemonListError, fetchPokemonList } = usePokemonList();
+const { offset, limit, pokemonListData, fetchPokemonList } = usePokemonList();
+const { pokemonListDataWithDetail, pokemonListWithDetailPending, pokemonListWithDetailError, fetchPokemonListWithDetail } = usePokemonListWithDetail(pokemonListData);
+
 const pageNum = ref<number>(1);
 const itemsPerPage = 20;
 
@@ -42,6 +49,7 @@ onMounted(async() => {
   pageNum.value = Math.floor(offset.value / itemsPerPage) + 1;
 
   await fetchPokemonList();
+  await fetchPokemonListWithDetail();
 });
 
 /**
@@ -63,6 +71,7 @@ watch(
     });
 
     await fetchPokemonList();
+    await fetchPokemonListWithDetail();
   }
 );
 </script>
